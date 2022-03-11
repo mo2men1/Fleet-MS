@@ -13,4 +13,11 @@ class TripController extends Controller
                     ->select('id')
                     ->get();
     }
+
+    public function get($trip_id)
+    {
+        return Trip::with('seats')
+                    ->with('stops:id,name')
+                    ->find($trip_id);
+    }
 }

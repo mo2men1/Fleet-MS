@@ -23,4 +23,9 @@ class Trip extends Model
                         ->withPivot('arrival_time', 'departure_time', 'stop_order')
                         ->orderBy('stop_order');
     }
+
+    public function seats()
+    {
+        return $this->hasMany(Seat::class);
+    }
 }
