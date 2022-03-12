@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\TripController;
 
@@ -20,8 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/token', [UserController::class, 'token']);
 Route::get('/cities', [CityController::class, 'index']);
 Route::get('/trips', [TripController::class, 'index']);
 Route::get('/trips/search', [TripController::class, 'search']);
 Route::get('/trips/{trip}', [TripController::class, 'get']);
-Route::post('/trips/{trip}/reserve', [TripController::class, 'reserve']);
+Route::post('/trips/{trip}/reserve', [TripController::class, 'reserve'])->middleware(['auth:sanctum']);
