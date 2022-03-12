@@ -24,3 +24,4 @@ Route::get('/cities', [CityController::class, 'index']);
 Route::get('/trips', [TripController::class, 'index']);
 Route::get('/trips/search', [TripController::class, 'search']);
 Route::get('/trips/{trip}', [TripController::class, 'get']);
+Route::post('/trips/{trip}/reserve', [TripController::class, 'reserve']);
