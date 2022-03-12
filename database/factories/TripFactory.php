@@ -29,7 +29,6 @@ class TripFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Trip $trip) {
-            echo "Creating seats ";
             $trip->seats()->saveMany([
                 new Seat(['name' => '1A']),
                 new Seat(['name' => '2A']),
