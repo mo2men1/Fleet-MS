@@ -44,6 +44,27 @@ class Trip extends Model
                     ->find($id);
     }
 
+    public static function find_by_ids_with_available_seats($id, $from, $to)
+    {
+        return self::with(['seats' => function ($query) use ($from, $to) {
+                        $query->whereNotIn('id', function ($subQuery1) use ($from, $to) {
+                            $subQuery1->select('seats.id')
+                            ->from('seats')
+                            ->join('reservations as r', 'r.seat_id', 'seats.id')
+                            ->join('bus_stops as from_stop', 'from_stop.id', 'r.from_stop')
+                            ->join('bus_stops as to_stop', 'to_stop.id', 'r.to_stop')
+                            ->join('bus_stops as source_stop', 'source_stop.city_id', DB::raw($from))
+                            ->join('bus_stops as dest_stop', 'dest_stop.city_id', DB::raw($to))
+                            ->where(function ($subQuery2) {
+                                $subQuery2->where('from_stop.stop_order', '<', DB::raw('dest_stop.stop_order'))
+                                    ->where('to_stop.stop_order', '>', DB::raw('source_stop.stop_order'));
+                            });
+                        });
+                    }])
+                    ->with('stops:id,name')
+                    ->find($id);
+    }
+
     public static function find_trip_ids_by_route($from, $to)
     {
         $trips = DB::table('trips as t')

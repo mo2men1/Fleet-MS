@@ -27,7 +27,7 @@ class TripController extends Controller
         $to = $request->query('to');
 
         $trip_ids = Trip::find_trip_ids_by_route($from, $to);
-        return Trip::find_by_ids($trip_ids);
+        return Trip::find_by_ids_with_available_seats($trip_ids, $from, $to);
     }
 
     public function reserve($trip_id, Request $request)
