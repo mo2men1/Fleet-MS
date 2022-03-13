@@ -33,7 +33,7 @@ Fleet-MS provides the following functionalities
 4. Install the application dependencies
    
    ```
-   $docker-compose exec app composer install
+   $ docker-compose exec app composer install
    ```
 
 5. Run the migrations and seed the database with initial data
