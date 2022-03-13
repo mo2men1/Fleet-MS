@@ -55,9 +55,9 @@ class TripController extends Controller
 
         return Reservation::create([
             "from_stop" => $request->all()['from'],
-            "from_stop" => $request->all()['from'],
             "to_stop" => $request->all()['to'],
-            "seat_id" => $request->all()['seat']
+            "seat_id" => $request->all()['seat'],
+            "user_id" => $request->user()->id,
         ]);
     }
 }

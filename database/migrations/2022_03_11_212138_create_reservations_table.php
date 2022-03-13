@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class);
             $table->foreignId('from_stop')->constrained('bus_stops');
             $table->foreignId('to_stop')->constrained('bus_stops');
             $table->foreignIdFor(Seat::class);
