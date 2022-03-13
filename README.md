@@ -1,64 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Fleet-MS
 
-## About Laravel
+Fleet-MS is a fleet management for bus trips booking service build by Laravel PHP.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Fleet-MS provides the following functionalities
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- User registeration and authentication.
+- َQuery list of cities/stations.
+- Search for trips going from certain city to a destination city.
+- Check available seats for a certain trip.
+- Book a seat on the desired trip.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
+## Development Tools
+* Laravel v9.4.1
+* PHP v8.1.3
+* MySQL v8.0.28
 
-## Learning Laravel
+---
+## Installation
+1. Clone this repo
+2. Build the docker image
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+	```
+	$ docker-compose build app
+	```
+3. Run the docker image
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```
+   $ docker-compose up -d
+   ```
+4. Install the application dependencies
+   
+   ```
+   $docker-compose exec app composer install
+   ```
 
-## Laravel Sponsors
+5. Run the migrations and seed the database with initial data
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+   ```
+   $ docker-compose exec app php artisan migrate:refresh --seed
+   ```
 
-### Premium Partners
+You're now ready to start using the APIs. Verify that the APIs are working by visiting the following path:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+`http://localhost:8000/api/cities`
 
-## Contributing
+---
+## APIs Documentation
+Fleet-MS is designed as a REST APIs which provides resources in `JSON` format by default.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The user should supply the `Accept` header with `application/json` value to all requests.
 
-## Code of Conduct
+You can access the APIs documentation [here](https://documenter.getpostman.com/view/6099942/UVsJvRyF).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+You can also easily test the APIs through this [postman collection](https://www.postman.com/mo2men1/workspace/fleetms-workspace/collection/6099942-596b0a9b-f5d7-4426-8897-c1304ea61e4b?action=share&creator=6099942).
 
-## Security Vulnerabilities
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/6099942-596b0a9b-f5d7-4426-8897-c1304ea61e4b?action=collection%2Ffork&collection-url=entityId%3D6099942-596b0a9b-f5d7-4426-8897-c1304ea61e4b%26entityType%3Dcollection%26workspaceId%3Da96af49d-fa39-4669-9a57-eefb322fb866)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Note: You'll need to have postman installed locally to be able to run the collection.**
 
-## License
+---
+## System Design
+### Entity Relationship Diagram
+![er_diagram](docs/er_diagram.jpg)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+## Operation
+Fleet-MS allows users to query trips from a start city to destination city and check available seats in such trips.
+
+Seat availability is checked such that the seat must be available from the start point to the end point of the trip.
+
+![operation_diagram](docs/operation_diagram.jpg)
+
+Suppose we have a bus trip that travels from city `A` to city `E`.
+
+A user is trying to reserve a booking on that trip from city `B` to city `D`.
+
+The user won't be able to reserve the selected seat if it was already reserved
+
+* with destination city after `B`
+* and with source city before `D`
+
+---
+## Authentication
+Fleet-MS supports multiple authentication techniques to support different consumer types by providing session cookies or Bearer tokens.
+
+In order to use session cookies, the user should use the `login` API
+
+`api/login`
+
+If a token is needed instead of the session cookies, the following API should be user
+
+`api/token`
+
+In such case, an addition parameter `device_name` should be supplied to associate the generated token to the user's device.
+
+---
+## Future Work
+* Add administration panel to manage entities and add trip details.
+* Implement Unit tests.
+* Allow Users to reserve multiple seats in a single reservation.
+* Support filtering trips by date or time.
+* Support search for the nearest trips to the destination city based on user's location.
+
+---
+## Limitations
+* No administration panel to register new trips.
+* No endpoint to cancel a reservation.
+  
