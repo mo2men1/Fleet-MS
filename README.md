@@ -20,7 +20,13 @@ Fleet-MS provides the following functionalities
 ---
 ## Installation
 1. Clone this repo
-2. Build the docker image
+2. Create the .env file from the .env.example file
+
+	```shell
+	$ cp .env.example .env
+	```
+
+3. Build the docker image
 
 	```shell
 	$ docker-compose build app
