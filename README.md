@@ -22,23 +22,23 @@ Fleet-MS provides the following functionalities
 1. Clone this repo
 2. Build the docker image
 
-	```
+	```shell
 	$ docker-compose build app
 	```
 3. Run the docker image
 
-   ```
+   ```shell
    $ docker-compose up -d
    ```
 4. Install the application dependencies
    
-   ```
+   ```shell
    $ docker-compose exec app composer install
    ```
 
 5. Run the migrations and seed the database with initial data
 
-   ```
+   ```shell
    $ docker-compose exec app php artisan migrate:refresh --seed
    ```
 
